@@ -6,16 +6,16 @@ namespace ASPNetCoreApp.Models
 {
     public partial class Game
     {
-        public Game() 
-        { 
-            Statistics = new HashSet<Statistics>(); 
+        public Game()
+        {
+            Statistics = new HashSet<Statistics>();
         }
 
         [Key]
         public int Id { get; set; }
         [StringLength(300)]
         public string Name { get; set; }
-        public string Genre { get; set; }
+        public int GenreId { get; set; }
         public string Mode { get; set; }
         [Column(TypeName = "date")]
         public DateTime? ReleaseDate { get; set; }
@@ -30,8 +30,12 @@ namespace ASPNetCoreApp.Models
         public string? ImageLink { get; set; }
         [StringLength(1000)]
         public string? Description { get; set; }
+        [Required]
         public float Rating { get; set; }
+        [Required]
         public int NumberRatings { get; set; }
         public virtual ICollection<Statistics> Statistics { get; set; }
+        [ForeignKey ("GenreId")]
+        public virtual Genre Genre { get; set; }
     }
 }

@@ -1,5 +1,7 @@
+using ASPNetCoreApp.Data;
 using ASPNetCoreApp.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,13 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<GamingPlatform>(opt =>
-    opt.UseInMemoryDatabase("TodoList"));
+builder.Services.AddDbContext<GamingPlatform>();
+builder.Services.AddControllers().AddJsonOptions(x => 
+x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var gamingContext = scope.ServiceProvider.GetRequiredService<GamingPlatform>();
+    await GamingPlatformSeed.SeedAsync(gamingContext);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

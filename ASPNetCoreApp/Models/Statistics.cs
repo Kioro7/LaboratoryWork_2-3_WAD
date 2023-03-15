@@ -8,11 +8,8 @@ namespace ASPNetCoreApp.Models
     {
         [Key]
         public int Id { get; set; }
-
         public int GameId { get; set; }
-
         public string UserName { get; set; }
-
         public float Rating { get; set; }
 
         [ForeignKey("GameId")]

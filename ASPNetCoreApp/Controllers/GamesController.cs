@@ -24,8 +24,8 @@ namespace ASPNetCoreApp.Controllers
                 _context.Game.Add(new Game
                 {
                     Name = "Elden Ring",
+                    GenreId = 1,
                     Mode = "online",
-                    Genre = "экшен",
                     Price = 3500,
                     Developer = " ",
                     Description = " ",
@@ -40,9 +40,9 @@ namespace ASPNetCoreApp.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Game> GetAll()
+        public async Task<ActionResult<IEnumerable<Game>>> GetAll()
         {
-            return _context.Game;
+            return await _context.Game.Include(i => i.Genre).ToListAsync();
         }
 
         [HttpGet("{id}")]
