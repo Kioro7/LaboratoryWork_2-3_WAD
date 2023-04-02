@@ -1,16 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 
 namespace ASPNetCoreApp.Models
 {
-    public partial class GamingPlatform : DbContext
+    public partial class GamingPlatform : IdentityDbContext<User,IdentityRole<int>,int>
     {
-        //#region Constructor
-        //public GamingPlatform(DbContextOptions<GamingPlatform> options) 
-        //    : base(options) { }
-        //#endregion
-
         protected readonly IConfiguration Configuration;
         public GamingPlatform(IConfiguration configuration)
         {
@@ -18,12 +15,14 @@ namespace ASPNetCoreApp.Models
         }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            options.UseSqlServer(Configuration.GetConnectionString("NewDB"));
         }
 
         public virtual DbSet<Game> Game { get; set; }
         public virtual DbSet<Statistics> Statistics { get; set; }
         public virtual DbSet<Genre> Genres { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +34,11 @@ namespace ASPNetCoreApp.Models
 
             modelBuilder.Entity<Genre>();
             modelBuilder.Entity<Genre>().HasKey(x => x.Id);
+
+            modelBuilder.Entity<User>();
+            modelBuilder.Entity<User>().HasKey(x => x.Id);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

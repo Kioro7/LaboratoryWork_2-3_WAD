@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ASPNetCoreApp.Models;
-using System.Reflection.Metadata;
+
+using Microsoft.AspNetCore.Cors;
+using ASPNetCoreApp.DTO;
 
 namespace ASPNetCoreApp.Controllers
 {
     [Route("api/games")]
+    [EnableCors]
     [ApiController]
     public class GamesController : Controller
     {
@@ -19,24 +22,6 @@ namespace ASPNetCoreApp.Controllers
         public GamesController(GamingPlatform context)
         {
             _context = context;
-            if (_context.Game.Count() == 0)
-            {
-                _context.Game.Add(new Game
-                {
-                    Name = "Elden Ring",
-                    GenreId = 1,
-                    Mode = "online",
-                    Price = 3500,
-                    Developer = " ",
-                    Description = " ",
-                    RegistrationDate = DateTime.Now,
-                    ReleaseDate = DateTime.Now,
-                    ImageLink = "EldenRing.ru",
-                    Rating = 5,
-                    NumberRatings = 105
-                });
-                _context.SaveChanges();
-            }
         }
 
         [HttpGet]
@@ -64,19 +49,36 @@ namespace ASPNetCoreApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Game game)
+        public async Task<IActionResult> Create([FromBody] GameDTO game)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _context.Game.Add(game);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetGame", new { id = game.Id }, game);
+
+            Game g = new Game
+            {
+                Name = game.Name,
+                GenreId = game.GenreId,
+                Mode = game.Mode,
+                ReleaseDate = game.ReleaseDate,
+                Price = game.Price,
+                Developer = game.Developer,
+                RegistrationDate = game.RegistrationDate,
+                ImageLink = game.ImageLink,
+                Description = game.Description,
+                Rating = game.Rating,
+                NumberRatings = game.NumberRatings,
+                Genre = _context.Genres.Find(game.GenreId)
+            };
+
+            _context.Game.Add(g);
+            _context.SaveChanges();
+            return CreatedAtAction("GetGame", new { id = g.Id }, g);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] Game game)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] GameDTO game)
         {
             if (!ModelState.IsValid)
             {
@@ -91,7 +93,7 @@ namespace ASPNetCoreApp.Controllers
             item.Name = game.Name;
             item.Description = game.Description;
             item.Mode = game.Mode;
-            item.Genre = game.Genre;
+            item.Genre = _context.Genres.Find(game.GenreId);
             item.Price = game.Price;
             item.Developer = game.Developer;
             item.RegistrationDate = game.RegistrationDate;
