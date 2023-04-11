@@ -2,7 +2,7 @@
 
 namespace ASPNetCoreApp.Data
 {
-    public static class GamingPlatformSeed
+    public static class GamesSeed
     {
         public static async Task SeedAsync(GamingPlatform context)
         {
@@ -10,35 +10,22 @@ namespace ASPNetCoreApp.Data
             {
                 context.Database.EnsureCreated();
 
-                if (context.Genres.Any() && context.Game.Any())
+                if (context.Game.Any())
                 {
                     return;
-                }
-
-                var genres = new Genre[]
-                {
-                    new Genre{Name = "Экшен"},
-                    new Genre{Name = "Приключение"},
-                    new Genre{Name = "Стратегия"},
-                    new Genre{Name = "Аркады"},
-                    new Genre{Name = "Симулятор"}
-                };
-                foreach (Genre g in genres)
-                {
-                    context.Genres.Add(g);
                 }
 
                 var games = new Game[]
                 {
                     new Game{Name = "Elden Ring",
-                        GenreId = 1, 
-                        Mode = "online", 
-                        ReleaseDate = new DateTime(2022, 2, 25), 
-                        Price = 3999, 
-                        Developer = "FromSoftware Inc.", 
-                        RegistrationDate = new DateTime(2022, 3, 10), 
+                        GenreId = 1,
+                        Mode = "online",
+                        ReleaseDate = new DateTime(2022, 2, 25),
+                        Price = 3999,
+                        Developer = "FromSoftware Inc.",
+                        RegistrationDate = new DateTime(2022, 3, 10),
                         ImageLink = "Elden Ring.jpg",
-                        Rating = 5, 
+                        Rating = 5,
                         NumberRatings = 20000,
                         Description = "Восстань, погасшая душа! Междуземье ждёт своего повелителя. Пусть благодать приведёт тебя к Кольцу Элден. Огромный мир с открытыми полями, множеством ситуаций и гигантскими подземельями, где сложные трёхмерные конструкции сочетаются воедино. Путешествуйте, преодолевайте смертельные опасности и радуйтесь успехам. Вы можете не только изменить внешность персонажа, но также комбинировать оружие, броню и предметы. Развивайте персонажа по своему вкусу. Наращивайте мышцы или постигайте таинства магии. Многослойная история, разбитая на фрагменты. Эпическая драма, в которой мысли персонажей пересекаются в Междуземье. Помимо многопользовательского режима, в котором вы напрямую подключаетесь к другим игрокам и путешествуете вместе, есть асинхронный сетевой режим, позволяющий ощутить присутствие других игроков."},
 

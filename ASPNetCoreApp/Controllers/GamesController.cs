@@ -9,6 +9,8 @@ using ASPNetCoreApp.Models;
 
 using Microsoft.AspNetCore.Cors;
 using ASPNetCoreApp.DTO;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace ASPNetCoreApp.Controllers
 {
@@ -108,6 +110,7 @@ namespace ASPNetCoreApp.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             if (!ModelState.IsValid)
