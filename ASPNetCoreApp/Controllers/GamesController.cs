@@ -27,7 +27,7 @@ namespace ASPNetCoreApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Game>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Game>>> GetGames()
         {
             return await _context.Game.Include(i => i.Genre).ToListAsync();
         }

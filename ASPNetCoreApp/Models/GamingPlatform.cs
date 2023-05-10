@@ -23,6 +23,7 @@ namespace ASPNetCoreApp.Models
         public virtual DbSet<Statistics> Statistics { get; set; }
         public virtual DbSet<Genre> Genres { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<BuyingGame> BuyingGames { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +40,9 @@ namespace ASPNetCoreApp.Models
             modelBuilder.Entity<User>().HasKey(x => x.Id);
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<BuyingGame>();
+            modelBuilder.Entity<BuyingGame>().HasKey(x => x.Id);
         }
     }
 }

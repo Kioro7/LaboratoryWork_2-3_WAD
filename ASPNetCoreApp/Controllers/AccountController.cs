@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 
 namespace ASPNetCoreApp.Controllers
 {
@@ -73,8 +72,6 @@ namespace ASPNetCoreApp.Controllers
                 if (result.Succeeded)
                 {
                     var usr = await _userManager.FindByEmailAsync(model.Email);
-
-                    //User usr = await _userManager.GetUserAsync(HttpContext.User);
                     IList<string> roles = await _userManager.GetRolesAsync(usr);
                     string? userRole = roles.FirstOrDefault();
                     return Ok(new { message = "Выполнен вход", userName = model.Email, userRole });

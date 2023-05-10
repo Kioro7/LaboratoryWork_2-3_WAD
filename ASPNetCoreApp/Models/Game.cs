@@ -9,6 +9,7 @@ namespace ASPNetCoreApp.Models
         public Game()
         {
             Statistics = new HashSet<Statistics>();
+            BuyingGames = new HashSet<BuyingGame>();
         }
 
         [Key]
@@ -35,6 +36,7 @@ namespace ASPNetCoreApp.Models
         [Required]
         public int NumberRatings { get; set; }
         public virtual ICollection<Statistics> Statistics { get; set; }
+        public virtual ICollection<BuyingGame> BuyingGames { get; set;}
         [ForeignKey ("GenreId")]
         public virtual Genre Genre { get; set; }
     }
