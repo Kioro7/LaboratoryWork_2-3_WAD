@@ -30,10 +30,11 @@ namespace ASPNetCoreApp.Controllers
                 if (result.Succeeded)
                 {
                     // Установка роли User
-                    await _userManager.AddToRoleAsync(user, "user");
+                    var role = await _userManager.AddToRoleAsync(user, "user");
                     // Установка куки
                     await _signInManager.SignInAsync(user, false);
-                    return Ok(new { message = "Добавлен новый пользователь: " + user.UserName, userName = model.Email });
+                    var usr = await _userManager.FindByEmailAsync(model.Email);
+                    return Ok(new { message = "Добавлен новый пользователь: " + user.UserName, usr.Id, userName = model.Email, role });
                 }
                 else
                 {
@@ -74,7 +75,7 @@ namespace ASPNetCoreApp.Controllers
                     var usr = await _userManager.FindByEmailAsync(model.Email);
                     IList<string> roles = await _userManager.GetRolesAsync(usr);
                     string? userRole = roles.FirstOrDefault();
-                    return Ok(new { message = "Выполнен вход", userName = model.Email, userRole });
+                    return Ok(new { message = "Выполнен вход", usr.Id, userName = model.Email, userRole });
                 }
                 else
                 {

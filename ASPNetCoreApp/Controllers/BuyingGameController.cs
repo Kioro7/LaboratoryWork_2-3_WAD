@@ -20,28 +20,21 @@ namespace ASPNetCoreApp.Controllers
             _context = context;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<BuyingGame>>> GetBuyingGames([FromRoute] int id)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<BuyingGame>>> GetBuyingGames()
         {
-            return await _context.BuyingGames.Include(i => i.Game).Include(i => i.User).Where(i => i.UserId == id).ToListAsync();
+            return await _context.BuyingGames.Include(i => i.Game).Include(i => i.User).ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBuyingGame([FromRoute] int id)
+        public async Task<ActionResult<IEnumerable<BuyingGame>>> GetBuyingGame([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var buying = await _context.BuyingGames.SingleOrDefaultAsync(m => m.Id == id);
-
-            if (buying == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(buying);
+            return await _context.BuyingGames.Include(i => i.Game).Include(i => i.User).Where(i => i.UserId == id).ToListAsync();
         }
 
         [HttpPost]

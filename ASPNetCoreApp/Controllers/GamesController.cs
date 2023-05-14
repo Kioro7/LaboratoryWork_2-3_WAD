@@ -67,7 +67,7 @@ namespace ASPNetCoreApp.Controllers
                 Price = game.Price,
                 Developer = game.Developer,
                 RegistrationDate = game.RegistrationDate,
-                ImageLink = game.ImageLink,
+                ImageLink = "https://drive.google.com/uc?export=view&id=1NB0GQkKLbgCFCHtaNzf6rIvbWNhzAbmW",
                 Description = game.Description,
                 Rating = game.Rating,
                 NumberRatings = game.NumberRatings,
@@ -100,13 +100,14 @@ namespace ASPNetCoreApp.Controllers
             item.Developer = game.Developer;
             item.RegistrationDate = game.RegistrationDate;
             item.ReleaseDate = game.ReleaseDate;
-            item.ImageLink = game.ImageLink;
+            item.ImageLink = "https://drive.google.com/uc?export=view&id=1NB0GQkKLbgCFCHtaNzf6rIvbWNhzAbmW";
             item.Rating = game.Rating;
             item.NumberRatings = game.NumberRatings;
 
             _context.Game.Update(item);
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok(item);
+            //return NoContent();
         }
 
         [HttpDelete("{id}")]
